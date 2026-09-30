@@ -1,0 +1,30 @@
+{
+  "name": "dsh-solarized-themes",
+  "version": "0.1.0",
+  "description": "Solarized Light / Solarized Dark themes for the DeepSeek Harness Web GUI (client-side theme registration + a General settings row; preference persisted in localStorage).",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./client/index.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-theme"
+      ]
+    }
+  },
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "solarized",
+    "theme"
+  ]
+}

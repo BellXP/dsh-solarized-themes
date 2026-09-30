@@ -1,0 +1,7 @@
+# dsh-solarized-themes bundle patch: inserts the client-only plugin row into
+# the profile roster. The host half (lib/index.js) is a no-op — both Solarized
+# themes are registered in the browser through ctx.theme.register, and the
+# preference lives in localStorage, so nothing needs host state.
+- insert:
+    - id: solarized-themes
+      name: 'dsh-solarized-themes'
