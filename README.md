@@ -11,6 +11,12 @@ DeepSeek Harness (DSH) Web GUI 的 **Solarized 系列主题**：Solarized Light 
 - 覆盖官方 design token 体系的全部语义槽（`--dsw-alias-*` 约 80 项 + `--dsw-specific-*` 表面 + `--shiki-token-*` 代码语法高亮），中间色一律用 `color-mix` 从 Ethan Schoonover 规范色板派生，不自创颜色。
 - 偏好持久化在浏览器 `localStorage`（第三方主题 id 不进官方 settings schema，由本插件在每次加载时回放）。
 
+## 平台支持
+
+**Windows / Linux / macOS 通用**：本插件是纯客户端实现（浏览器里的 React + CSS 变量 +
+localStorage），host 半为空，没有任何 OS 依赖。唯一的环境要求是浏览器支持 `color-mix()`
+（Chromium 111+）——官方 DSH 样式表本身已依赖它，DSH Web GUI 能跑就能用。
+
 ## 结构
 
 ```
