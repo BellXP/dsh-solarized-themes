@@ -17,6 +17,16 @@ DeepSeek Harness (DSH) Web GUI 的 **Solarized 系列主题**：Solarized Light 
 localStorage），host 半为空，没有任何 OS 依赖。唯一的环境要求是浏览器支持 `color-mix()`
 （Chromium 111+）——官方 DSH 样式表本身已依赖它，DSH Web GUI 能跑就能用。
 
+### 契约探针（升级雷达）
+
+升级 dsh 前对安装树跑一遍，断掉的契约按名字报出（本仓库无 node_modules，需传树）：
+
+```bash
+node scripts/check-dsh-contract.mjs <dsh安装>/node_modules/@deepseek-ai
+```
+
+覆盖：`settings.general.item` 插槽、主题注册面、`--dsw-alias-` 设计令牌词汇。
+
 ## 结构
 
 ```
