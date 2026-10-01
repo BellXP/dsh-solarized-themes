@@ -1,6 +1,6 @@
 {
   "name": "dsh-solarized-themes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Solarized Light / Solarized Dark themes for the DeepSeek Harness Web GUI (client-side theme registration + a General settings row; preference persisted in localStorage).",
   "type": "module",
   "exports": {
