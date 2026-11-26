@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Solarized themes",
+    "description": "Adds Solarized Light and Solarized Dark to Settings > General. Both palettes override the Web GUI's design tokens, including code syntax highlighting; the choice is saved in this browser."
+  }
+}

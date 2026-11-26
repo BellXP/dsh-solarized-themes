@@ -8,8 +8,17 @@ DeepSeek Harness (DSH) Web GUI 的 **Solarized 系列主题**：Solarized Light 
   - **Solarized 浅色**（base3 米黄画布 + base01 墨绿正文）
   - **Solarized 深色**（base03 深青画布 + base1 青灰正文）
   - **关闭**（回到内置的浅色/深色/跟随系统偏好）
-- 覆盖官方 design token 体系的全部语义槽（`--dsw-alias-*` 约 80 项 + `--dsw-specific-*` 表面 + `--shiki-token-*` 代码语法高亮），中间色一律用 `color-mix` 从 Ethan Schoonover 规范色板派生，不自创颜色。
+- 覆盖官方 design token 体系的语义槽：dsh 0.2.2 词表 154 个 `--dsw-alias-*` / `--dsw-specific-*` 令牌中覆盖 140 个
+  （未覆盖的只有纯黑遮罩与 macOS 专用玻璃叠层，见 `client/index.js` 头注释）+ `--shiki-token-*` 代码语法高亮，
+  中间色一律用 `color-mix` 从 Ethan Schoonover 规范色板派生，不自创颜色。
 - 偏好持久化在浏览器 `localStorage`（第三方主题 id 不进官方 settings schema，由本插件在每次加载时回放）。
+- 自带 Plugins 页元数据（`locale/*.json` 标题/描述 + `icon.svg`）。
+
+## 兼容性
+
+当前按 **dsh 0.2.2-rc.5**（Web profile）核对：`ctx.theme.register(ThemeDefinition)`、`theme/change`、
+`settings.general.item` 插槽、`ctx.locale.register` 与 `window.__ModuleLoader__.load` 客户端工厂形态均未变化。
+纯客户端实现，没有 `@deepseek-ai/dsh-*` 依赖，因此不受插件版本门控影响。升级 dsh 后先跑一遍契约探针（见下）。
 
 ## 平台支持
 
@@ -25,7 +34,8 @@ localStorage），host 半为空，没有任何 OS 依赖。唯一的环境要�
 node scripts/check-dsh-contract.mjs <dsh安装>/node_modules/@deepseek-ai
 ```
 
-覆盖：`settings.general.item` 插槽、主题注册面、`--dsw-alias-` 设计令牌词汇。
+覆盖：`settings.general.item` 插槽、主题注册面、`--dsw-alias-` 设计令牌词汇；并逐项核对本插件的覆盖名是否
+仍存在于安装树（死覆盖 → FAIL），列出安装树新增而尚未覆盖的令牌（INFO）。
 
 ## 结构
 
@@ -33,16 +43,21 @@ node scripts/check-dsh-contract.mjs <dsh安装>/node_modules/@deepseek-ai
 lib/index.js     host 半（刻意为空：纯客户端插件，此文件仅为满足 cordis 加载器）
 client/index.js  client 半：注册主题 + 设置行 + localStorage 回放
 cordis.patch.yml bundle 插入行
+locale/          Plugins 页标题 / 描述（en、zh）
+icon.svg         Plugins 页图标
 ```
 
 ## 安装（link 方式装入 web profile）
 
 ```powershell
-# 1) profile 依赖 + bundle 名单（~/.dsh/profiles/web/package.json）
-#    "dependencies" 增加本项目 link: 路径；"dsh.profile.bundles" 追加 'dsh-solarized-themes'
-# 2) 在 profile 目录 pnpm install
-# 3) 重启 dsh web
+# 推荐：dsh 自带的 plugin 子命令（等价于在 profile 目录里 pnpm add link:<路径>）
+dsh plugin --profile web add link:C:\Users\x00968307\Documents\deepseek-harness\plugins\dsh-solarized-themes
+# 然后把 'dsh-solarized-themes' 追加到 ~/.dsh/profiles/web/package.json 的 dsh.profile.bundles，重启 dsh web
 ```
+
+或手动：在 `~/.dsh/profiles/web/package.json` 的 `"dependencies"` 加 `"dsh-solarized-themes": "link:<本目录>"`、
+`"dsh.profile.bundles"` 追加 `'dsh-solarized-themes'`，在 profile 目录执行 `pnpm install`，重启 `dsh web`。
+GUI 里也可以用 **Plugins → Add plugin** 选择本目录。
 
 卸载：从 bundle 名单与 dependencies 移除后重启即可；localStorage 里的偏好键为
 `dsh.solarizedThemes.preference` / `dsh.solarizedThemes.builtInFallback`。

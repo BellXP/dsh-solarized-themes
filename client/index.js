@@ -7,8 +7,13 @@
  * - 通过 ctx.theme.register 注册两个第三方主题：
  *     solarized-light  （colorScheme: light）
  *     solarized-dark   （colorScheme: dark）
- *   令牌覆盖 = 官方 design-platform.css 的全部 --dsw-alias-* / --dsw-specific-*
- *   语义槽 + --shiki-token-* 语法高亮（Solarized 经典强调色）。
+ *   令牌覆盖 = 官方 design-platform.css 的 --dsw-alias-* / --dsw-specific-*
+ *   语义槽（dsh 0.2.2 词表 154 项中覆盖 140 项）+ --shiki-token-* 语法高亮
+ *   （Solarized 经典强调色）。刻意不覆盖的两类：
+ *     1) --dsw-alias-bg-mask-{1,2,3,photo} —— 纯黑半透明遮罩，与色板无关；
+ *     2) --dsw-specific-sidebar-{glass,wash,tint}*/right-flash —— 仅在
+ *        html[data-platform='darwin'] 下生效的 macOS 振动玻璃叠层（中性半透明）。
+ *   scripts/check-dsh-contract.mjs 会核对覆盖名是否仍存在于安装树。
  * - 在 设置 → 通用 里注册一行（settings.general.item，order 12，紧跟官方
  *   外观/字号行）：关闭 / Solarized 浅色 / Solarized 深色 三个 cube。
  * - 偏好持久化在 localStorage（第三方主题 id 不进官方 settings schema，
@@ -165,19 +170,67 @@ window.__ModuleLoader__.load({
       '--dsw-alias-toast-label': S.base2,
       '--dsw-alias-tooltip-bg': S.base02,
       '--dsw-alias-tooltip-key-bg': mix(S.base02, S.base2, 18),
+      '--dsw-alias-toast-action': S.blue,
+      '--dsw-alias-tooltip-label': S.base2,
+      // ---- hover card（官方两套主题都保持深底，这里同样固定 base03）
+      '--dsw-alias-hovercard-bg': S.base03,
+      '--dsw-alias-hovercard-label-primary': S.base2,
+      '--dsw-alias-hovercard-label-secondary': S.base1,
+      '--dsw-alias-hovercard-label-tertiary': S.base0,
+      '--dsw-alias-hovercard-state-done': S.violet,
+      '--dsw-alias-hovercard-state-error': S.red,
+      // ---- 卡片 / 菜单组头 / 选中边框 / 文档选区 / 拖放遮罩
+      '--dsw-alias-card-fill': S.base3,
+      '--dsw-alias-card-fill-hover': S.base2,
+      '--dsw-alias-card-tile-fill': mix(S.base3, 'transparent', 50),
+      '--dsw-alias-menu-group-header-fill': S.base2 + 'f0',
+      '--dsw-alias-border-selected': S.base1,
+      '--dsw-alias-bg-document-selection': S.blue + '66',
+      '--dsw-alias-bg-mask-drop': S.base3 + 'b3',
+      // ---- 文字变体（饱和底色上的墨色 / 微光扫过 / 深潜活动标签）
+      '--dsw-alias-label-on-color': S.base3,
+      '--dsw-alias-label-shimmer': S.base03 + '4d',
+      '--dsw-alias-label-deep-diving': S.blue,
+      '--dsw-alias-label-deep-diving-shimmer': mix(S.blue, S.base3, 30),
+      // ---- 状态补位（已完成 / 开关滑块 / 轨迹高亮 / Turn 触发条）
+      '--dsw-alias-state-done-primary': S.violet,
+      '--dsw-alias-switch-thumb': S.base3,
+      '--dsw-alias-trajectory-accent': S.blue,
+      '--dsw-alias-turn-trigger-bg': 'var(--dsw-alias-markdown-code-block)',
+      '--dsw-alias-turn-trigger-bg-hover': 'var(--dsw-alias-interactive-bg-hover)',
+      // ---- 图表（上下文计量器分类）
+      '--dsw-alias-chart-messages': S.blue,
+      '--dsw-alias-chart-system': S.base0,
+      '--dsw-alias-chart-tools': S.violet,
+      // ---- 插画分层（背景 / 背板 / 细节 / 前景面）
+      '--dsw-alias-illustration-background': S.base3,
+      '--dsw-alias-illustration-backing': S.base1,
+      '--dsw-alias-illustration-detail': S.base01,
+      '--dsw-alias-illustration-surface': S.base2,
+      '--dsw-alias-illustration-inset': 'var(--dsw-alias-illustration-surface)',
+      '--dsw-alias-illustration-shadow': 'var(--dsw-alias-illustration-surface)',
+      // ---- JSON 树（沿用官方语义：关键字蓝紫、属性紫、字符串红）
+      '--dsw-alias-json-tree-hover': S.base01 + '0a',
+      '--dsw-alias-json-tree-icon': S.base00,
+      '--dsw-alias-json-tree-keyword': S.violet,
+      '--dsw-alias-json-tree-number': S.violet,
+      '--dsw-alias-json-tree-property': S.magenta,
+      '--dsw-alias-json-tree-punctuation': S.base00,
+      '--dsw-alias-json-tree-string': S.red,
       // ---- specific 表面
       '--dsw-menu-surface-fill': S.base2 + 'b0',
       '--dsw-specific-menu': 'var(--dsw-menu-surface-fill)',
       '--dsw-specific-selector': S.base2,
       '--dsw-specific-sidebar-fill': S.base2,
       '--dsw-specific-sidebar-nav-item-active': mix(S.base2, S.base1, 14),
-      '--dsw-specific-sidebar-nav-item-hover': mix(S.base2, S.base1, 7),
       '--dsw-specific-sidebar-nav-item-active-accent': S.blue + '1c',
       '--dsw-specific-tip': S.base2,
       '--dsw-specific-input-major': S.base3,
       '--dsw-specific-login-input': S.base2,
       '--dsw-specific-bubble': mix(S.base2, S.cyan, 8),
       '--dsw-specific-bubble-highlight': mix(S.base2, S.cyan, 16),
+      '--dsw-specific-file-upload-track': S.base01 + '14',
+      '--dsw-specific-guide-hero': S.base1,
       // ---- 语法高亮
       ...shikiTokens(S.base01, S.base2, S.base1, S.base00),
     }
@@ -281,19 +334,67 @@ window.__ModuleLoader__.load({
       '--dsw-alias-toast-label': S.base2,
       '--dsw-alias-tooltip-bg': mix(S.base02, S.base03, 60),
       '--dsw-alias-tooltip-key-bg': mix(mix(S.base02, S.base03, 60), S.base2, 18),
+      '--dsw-alias-toast-action': S.blue,
+      '--dsw-alias-tooltip-label': S.base3,
+      // ---- hover card（官方两套主题都保持深底，这里同样固定 base03）
+      '--dsw-alias-hovercard-bg': S.base03,
+      '--dsw-alias-hovercard-label-primary': S.base2,
+      '--dsw-alias-hovercard-label-secondary': S.base1,
+      '--dsw-alias-hovercard-label-tertiary': S.base0,
+      '--dsw-alias-hovercard-state-done': S.violet,
+      '--dsw-alias-hovercard-state-error': S.red,
+      // ---- 卡片 / 菜单组头 / 选中边框 / 文档选区 / 拖放遮罩
+      '--dsw-alias-card-fill': mix(S.base02, S.base2, 15),
+      '--dsw-alias-card-fill-hover': mix(S.base02, S.base2, 30),
+      '--dsw-alias-card-tile-fill': mix(S.base2, 'transparent', 5),
+      '--dsw-alias-menu-group-header-fill': S.base02 + 'f0',
+      '--dsw-alias-border-selected': S.base0,
+      '--dsw-alias-bg-document-selection': S.blue + '66',
+      '--dsw-alias-bg-mask-drop': S.base03 + 'b3',
+      // ---- 文字变体（饱和底色上的墨色 / 微光扫过 / 深潜活动标签）
+      '--dsw-alias-label-on-color': S.base3,
+      '--dsw-alias-label-shimmer': S.base3 + '73',
+      '--dsw-alias-label-deep-diving': mix(S.blue, S.base1, 55),
+      '--dsw-alias-label-deep-diving-shimmer': mix(S.blue, S.base2, 65),
+      // ---- 状态补位（已完成 / 开关滑块 / 轨迹高亮 / Turn 触发条）
+      '--dsw-alias-state-done-primary': S.violet,
+      '--dsw-alias-switch-thumb': S.base0,
+      '--dsw-alias-trajectory-accent': S.blue,
+      '--dsw-alias-turn-trigger-bg': 'var(--dsw-alias-interactive-bg-hover)',
+      '--dsw-alias-turn-trigger-bg-hover': 'var(--dsw-alias-interactive-bg-active)',
+      // ---- 图表（上下文计量器分类）
+      '--dsw-alias-chart-messages': S.blue,
+      '--dsw-alias-chart-system': S.base1,
+      '--dsw-alias-chart-tools': S.violet,
+      // ---- 插画分层（背景 / 背板 / 细节 / 前景面）
+      '--dsw-alias-illustration-background': S.base03,
+      '--dsw-alias-illustration-backing': mix(S.base02, S.base2, 30),
+      '--dsw-alias-illustration-detail': S.base1,
+      '--dsw-alias-illustration-surface': mix(S.base02, S.base2, 15),
+      '--dsw-alias-illustration-inset': 'var(--dsw-alias-illustration-backing)',
+      '--dsw-alias-illustration-shadow': 'var(--dsw-alias-illustration-backing)',
+      // ---- JSON 树（沿用官方语义：关键字蓝、属性青、字符串橙红）
+      '--dsw-alias-json-tree-hover': S.base2 + '0d',
+      '--dsw-alias-json-tree-icon': S.base1,
+      '--dsw-alias-json-tree-keyword': S.blue,
+      '--dsw-alias-json-tree-number': S.blue,
+      '--dsw-alias-json-tree-property': S.cyan,
+      '--dsw-alias-json-tree-punctuation': S.base2,
+      '--dsw-alias-json-tree-string': S.orange,
       // ---- specific 表面
       '--dsw-menu-surface-fill': mix(S.base02, 'transparent', 65),
       '--dsw-specific-menu': 'var(--dsw-menu-surface-fill)',
       '--dsw-specific-selector': mix(S.base02, S.base2, 30),
       '--dsw-specific-sidebar-fill': S.base02,
       '--dsw-specific-sidebar-nav-item-active': mix(S.base02, S.base2, 15),
-      '--dsw-specific-sidebar-nav-item-hover': mix(S.base02, S.base2, 8),
       '--dsw-specific-sidebar-nav-item-active-accent': S.blue + '2e',
       '--dsw-specific-tip': mix(S.base02, S.base2, 15),
       '--dsw-specific-input-major': mix(S.base02, S.base2, 15),
       '--dsw-specific-login-input': S.base02,
       '--dsw-specific-bubble': mix(S.base02, S.cyan, 8),
       '--dsw-specific-bubble-highlight': mix(S.base02, S.cyan, 18),
+      '--dsw-specific-file-upload-track': S.base2 + '14',
+      '--dsw-specific-guide-hero': S.base00,
       // ---- 语法高亮
       ...shikiTokens(S.base1, S.base02, S.base01, S.base0),
     }
